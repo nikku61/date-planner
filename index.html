@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Planner</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .hidden { display: none; }
+        /* Style for selected food items */
+        .food-card.selected {
+            border-color: #ec4899;
+            background-color: #fdf2f8;
+            color: #db2777;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="bg-pink-50 min-h-screen flex items-center justify-center font-sans antialiased text-gray-800">
+
+    <div class="max-w-md w-full p-6 bg-white rounded-3xl shadow-xl border border-pink-100 text-center mx-4">
+        
+        <div id="screen1" class="space-y-6">
+            <div class="text-6xl animate-bounce">💌</div>
+            <h1 class="text-3xl font-extrabold text-pink-600">Will you go on a date with me?</h1>
+            <div class="flex justify-center gap-4 pt-4 relative">
+                <button id="yesBtn" class="px-8 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full shadow-lg transition-transform transform hover:scale-105">
+                    Yes 💖
+                </button>
+                <button id="noBtn" class="px-8 py-3 bg-gray-200 hover:bg-gray-300 text-gray-600 font-bold rounded-full transition-all">
+                    No
+                </button>
+            </div>
+        </div>
+
+        <div id="screen2" class="hidden space-y-6">
+            <h2 class="text-2xl font-bold text-pink-600">So... when are you free?</h2>
+            
+            <div class="text-left space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Pick a Day ✨</label>
+                    <input 
+                        type="date" 
+                        id="dateInput" 
+                        class="w-full p-3 border border-pink-200 rounded-xl focus:outline-pink-400"
+                    >
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">What Time? ⏰</label>
+                    <select id="timeInput" class="w-full p-3 border border-pink-200 rounded-xl focus:outline-pink-400 bg-white">
+                        <option value="6:00 PM">6:00 PM — The perfect time</option>
+                        <option value="7:00 PM">7:00 PM — Fashionably late</option>
+                        <option value="8:00 PM">8:00 PM — Late night vibes</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="toFoodBtn" class="w-full py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full shadow-md">
+                Next step! →
+            </button>
+        </div>
+
+        <div id="screen3" class="hidden space-y-6">
+            <h2 class="text-2xl font-bold text-pink-600">What are we feeling? 🍕✨</h2>
+            <p class="text-xs text-gray-400 italic mt-[-12px]">(you can pick more than one btw)</p>
+
+            <div class="grid grid-cols-2 gap-3 text-left">
+                <div class="food-card p-4 border border-gray-100 bg-gray-50 rounded-2xl flex flex-col items-center cursor-pointer transition-all hover:border-pink-200" data-food="Pizza">
+                    <span class="text-3xl">🍕</span>
+                    <span class="text-sm font-bold mt-1">Pizza</span>
+                </div>
+                <div class="food-card p-4 border border-gray-100 bg-gray-50 rounded-2xl flex flex-col items-center cursor-pointer transition-all hover:border-pink-200" data-food="Sushi">
+                    <span class="text-3xl">🍣</span>
+                    <span class="text-sm font-bold mt-1">Sushi</span>
+                </div>
+                <div class="food-card p-4 border border-gray-100 bg-gray-50 rounded-2xl flex flex-col items-center cursor-pointer transition-all hover:border-pink-200" data-food="Burgers">
+                    <span class="text-3xl">🍔</span>
+                    <span class="text-sm font-bold mt-1">Burgers</span>
+                </div>
+                <div class="food-card p-4 border border-gray-100 bg-gray-50 rounded-2xl flex flex-col items-center cursor-pointer transition-all hover:border-pink-200" data-food="Pasta">
+                    <span class="text-3xl">🍝</span>
+                    <span class="text-sm font-bold mt-1">Pasta</span>
+                </div>
+                <div class="food-card p-4 border border-gray-100 bg-gray-50 rounded-2xl flex flex-col items-center cursor-pointer transition-all hover:border-pink-200" data-food="Tacos">
+                    <span class="text-3xl">🌮</span>
+                    <span class="text-sm font-bold mt-1">Tacos</span>
+                </div>
+                <div class="food-card p-4 border border-gray-100 bg-gray-50 rounded-2xl flex flex-col items-center cursor-pointer transition-all hover:border-pink-200" data-food="Ramen">
+                    <span class="text-3xl">🍜</span>
+                    <span class="text-sm font-bold mt-1">Ramen</span>
+                </div>
+            </div>
+
+            <button id="finishBtn" class="w-full py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full shadow-md">
+                this one! →
+            </button>
+        </div>
+
+        <div id="screen4" class="hidden space-y-6">
+            <h2 class="text-3xl font-extrabold text-pink-600">It's a date! 🎉</h2>
+            <p class="text-gray-500 italic">I'll be the one outside trying to look chill 😎</p>
+            
+            <div class="bg-pink-50 p-5 rounded-2xl border border-pink-100 text-left space-y-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-pink-400 block mb-0.5">When</span>
+                    <p id="summaryWhen" class="font-bold text-gray-700"></p>
+                </div>
+                <hr class="border-pink-100">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-pink-400 block mb-0.5">Food Choice</span>
+                    <p id="summaryFood" class="font-bold text-gray-700"></p>
+                </div>
+            </div>
+
+            <button id="copyBtn" class="w-full py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full shadow-md flex items-center justify-center gap-2">
+                📋 Copy plan & text me
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // Track state selections
+        let selectedDate = "";
+        let selectedTime = "";
+        let selectedFoods = [];
+
+        // Disable calendar picking for past dates
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById('dateInput').setAttribute('min', today);
+
+        // Runaway "No" Button Logic
+        const noBtn = document.getElementById('noBtn');
+        noBtn.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth) - (window.innerWidth/2);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight) - (window.innerHeight/2);
+            noBtn.style.transform = `translate(${x/4}px, ${y/4}px)`;
+        });
+
+        // Toggle Selection handling for Food Cards
+        document.querySelectorAll('.food-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('selected');
+                const foodName = card.getAttribute('data-food');
+                
+                if (selectedFoods.includes(foodName)) {
+                    selectedFoods = selectedFoods.filter(item => item !== foodName);
+                } else {
+                    selectedFoods.push(foodName);
+                }
+            });
+        });
+
+        // Screen Transitions 
+        // 1. Question -> Logistics
+        document.getElementById('yesBtn').addEventListener('click', () => {
+            document.getElementById('screen1').classList.add('hidden');
+            document.getElementById('screen2').classList.remove('hidden');
+        });
+
+        // 2. Logistics -> Food Picker
+        document.getElementById('toFoodBtn').addEventListener('click', () => {
+            selectedDate = document.getElementById('dateInput').value;
+            selectedTime = document.getElementById('timeInput').value;
+
+            if(!selectedDate) {
+                alert("Please pick a day!");
+                return;
+            }
+
+            document.getElementById('screen2').classList.add('hidden');
+            document.getElementById('screen3').classList.remove('hidden');
+        });
+
+        // 3. Food Picker -> Final Summary Card
+        document.getElementById('finishBtn').addEventListener('click', () => {
+            if (selectedFoods.length === 0) {
+                alert("Please select at least one thing you're craving!");
+                return;
+            }
+
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            const formattedDate = new Date(selectedDate).toLocaleDateString('en-US', options);
+
+            // Populate the UI text holders
+            document.getElementById('summaryWhen').innerText = `${formattedDate} at ${selectedTime}`;
+            document.getElementById('summaryFood').innerText = selectedFoods.join(', ');
+
+            document.getElementById('screen3').classList.add('hidden');
+            document.getElementById('screen4').classList.remove('hidden');
+        });
+
+        // 4. Copy data text to clipboard 
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            const finalWhen = document.getElementById('summaryWhen').innerText;
+            const finalFood = document.getElementById('summaryFood').innerText;
+            
+            const planText = `It's a date! 📅 See you on ${finalWhen}. Craving: ${finalFood}. Don't forget! 😉`;
+            
+            navigator.clipboard.writeText(planText).then(() => {
+                alert("Plan copied to clipboard! Go paste it to them!");
+            });
+        });
+    </script>
+</body>
+</html>
